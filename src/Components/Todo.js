@@ -8,19 +8,37 @@ export default class Todo extends Component {
             currTasks: ''
         }
     }
+    handleChange = (e)=>{
+        // console.log(e.target.value)
+        this.setState({
+            currTasks:e.target.value
+        })
+    }
+    handleSubmit = ()=>{
+        this.setState({
+            tasks:[...this.state.tasks,{task:this.state.currTasks},{id:this.state.id}],
+            currTasks:''
+        })
+    }
+    deleteHandle = (id) =>{
+        let narr = this.state.tasks.filter((taskObj)=>{
+            return taskObj.id!=id;
+        })
+        this.setState({
+            tasks:[...narr]
+        })
+    }
   render() {
     return <div>
+        <input type='text' value={this.state.currTasks} onChange={this.handleChange}/>
+        <button onClick={this.handleSubmit}>submit</button>
         <ul>
-        <input type='text'/>
-        <button>submit</button>
         {
             this.state.tasks.map((taskObj)=>(
-                <div key={taskObj.id}>
-                    <li>
+                <li key={taskObj.id}>
                         <p>{taskObj.task}</p>
-                        <button>delete</button>
-                    </li>
-                </div>
+                        <button onClick={()=>this.deleteHandle(taskObj.id)}>delete</button>
+                </li>
             ))
     
         }
